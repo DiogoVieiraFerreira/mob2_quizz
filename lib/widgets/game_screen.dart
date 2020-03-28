@@ -16,8 +16,8 @@ class GameScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
-                'This is the question',
+              Consumer<QuizSession>(
+                builder: (_, session, __) => Text(session.label),
               ),
               RaisedButton(
                 onPressed: () {},
