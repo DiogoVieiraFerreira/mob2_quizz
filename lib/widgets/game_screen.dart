@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:quiz/models/quiz_session.dart';
 
 class GameScreen extends StatelessWidget {
   @override
@@ -7,26 +10,29 @@ class GameScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Quiz"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'This is the question',
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('La réponse 1'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('La réponse 2'),
-            ),
-            RaisedButton(
-              onPressed: () {},
-              child: Text('La réponse 3'),
-            ),
-          ],
+      body: Provider(
+        create: (_) => QuizSession(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'This is the question',
+              ),
+              RaisedButton(
+                onPressed: () {},
+                child: Text('La réponse 1'),
+              ),
+              RaisedButton(
+                onPressed: () {},
+                child: Text('La réponse 2'),
+              ),
+              RaisedButton(
+                onPressed: () {},
+                child: Text('La réponse 3'),
+              ),
+            ],
+          ),
         ),
       ),
     );
