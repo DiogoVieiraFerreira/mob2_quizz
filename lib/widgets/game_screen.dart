@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:quiz/models/quiz_session.dart';
+import 'package:quiz/models/question.dart';
 
 class GameScreen extends StatelessWidget {
   @override
@@ -10,30 +11,35 @@ class GameScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Quiz"),
       ),
-      body: Provider(
+      body: ChangeNotifierProvider(
         create: (_) => QuizSession(),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Consumer<QuizSession>(
-                builder: (_, session, __) => Text(session.label),
-              ),
-              RaisedButton(
-                onPressed: () {},
-                child: Text('La réponse 1'),
-              ),
-              RaisedButton(
-                onPressed: () {},
-                child: Text('La réponse 2'),
-              ),
-              RaisedButton(
-                onPressed: () {},
-                child: Text('La réponse 3'),
-              ),
-            ],
-          ),
+        child: Consumer<QuizSession>(
+          builder: (consumerContext, session, __) => buildQuestion(consumerContext, session.currentQuestion),
         ),
+      ),
+    );
+  }
+
+  Widget buildQuestion(BuildContext context, Question question) {
+    var answerButtons = question.answers.map((answer) {
+      return RaisedButton(
+        onPressed: () {
+          var session = Provider.of<QuizSession>(context, listen: false);
+          if (session.checkAnswer(answer)) {
+            session.nextQuestion();
+          }
+        },
+        child: Text(answer),
+      );
+    });
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(question.caption),
+          ...answerButtons,
+        ],
       ),
     );
   }
