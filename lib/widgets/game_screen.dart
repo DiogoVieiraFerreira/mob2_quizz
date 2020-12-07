@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:quiz/models/Remote_question_repository.dart';
+import 'package:quiz/models/local_question_repository.dart';
 
 import 'package:quiz/models/quiz_session.dart';
 import 'package:quiz/models/question.dart';
@@ -7,17 +9,28 @@ import 'package:quiz/models/question.dart';
 class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // QuizSession session = QuizSession(questionRepository: new LocalQuestionRepository(),totalQuestions: 4 );
+    QuizSession session = QuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"),totalQuestions: 4 );
+    session.nextQuestion();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Quiz"),
       ),
-      body: ChangeNotifierProvider(
-        create: (_) => QuizSession(),
+      body: ChangeNotifierProvider.value(
+        value: session,
         child: Consumer<QuizSession>(
           builder: (consumerContext, session, __) {
-            return session.isCompleted()
-                ? buildEndGame(context, session)
-                : buildQuestion(consumerContext, session);
+            switch(session.state) {
+              case QuizSessionState.loading:
+                return buildLoading();
+              case QuizSessionState.showing:
+                return buildQuestion(consumerContext, session);
+              case QuizSessionState.completed:
+                default: //TODO create error page
+                return buildEndGame(context, session);
+                break;
+            }
           },
         ),
       ),
@@ -33,6 +46,11 @@ class GameScreen extends StatelessWidget {
     );
   }
 
+  Widget buildLoading() {
+    return Center(
+        child: CircularProgressIndicator()
+    );
+  }
   Widget buildQuestion(BuildContext context, QuizSession session) {
     var answerButtons = session.currentQuestion.answers.map((answer) {
       return ElevatedButton(
@@ -66,7 +84,7 @@ class GameScreen extends StatelessWidget {
   Widget buildHint(BuildContext context, QuizSession session) {
     return Center(
       child: FloatingActionButton(
-        onPressed: () => session.hintRequested(),
+        onPressed: () => session.toggleHint(),
         child: Icon(Icons.help_outline),
         backgroundColor: Theme.of(context).accentColor,
       ),    
@@ -77,7 +95,7 @@ class GameScreen extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Text("Total Questions: ${session.length}",
+          Text("Total Questions: ${session.totalQuestions}",
               textScaleFactor: 2, textAlign: TextAlign.center),
           Text("Your Score: ${session.score}",
               textScaleFactor: 2, textAlign: TextAlign.center),

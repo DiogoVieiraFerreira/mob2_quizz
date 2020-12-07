@@ -1,40 +1,50 @@
 import 'package:flutter/foundation.dart';
 import 'package:quiz/models/question.dart';
+import 'package:quiz/models/question_repository.dart';
+enum QuizSessionState {
+  loading,
+  showing,
+  completed,
+}
 
 class QuizSession with ChangeNotifier {
-  var _score = 0;
-  var _questions = [
-    Question("2 + 2", ["1", "2", "4"], "4", "come on"),
-    Question("Meaning of life?", ["God", "42", "Me"], "42", "H2G2"),
-    Question("May the Force be with you", ["Star Wars", "Forest Gump", "American Pie"], "Star Wars", "Skywalker"),
-  ];
+  QuestionRepository _questionRepository;
+  Question _currentQuestion;
+  int _totalQuestions;
+  int _currentQuestionCount = 0;
+  bool _showHint;
+  QuizSessionState _state;
+  int _score = 0;
 
-  var _currentQuestionIndex = 0;
-  bool _showHint = false;
-  bool get showHint => _showHint;
-  int get score => _score;
-  int get length => _questions.length;
-  Question get currentQuestion => _questions[_currentQuestionIndex];
-  Question get lastQuestion => _questions[_questions.length-1];
-
-  bool completed = false;
-
-  void nextQuestion() {
-    _currentQuestionIndex++;
+  QuizSession({QuestionRepository questionRepository, @required int totalQuestions}) {
+    _state = QuizSessionState.loading;
+    _questionRepository = questionRepository;
+    _totalQuestions = totalQuestions;
     _showHint = false;
-    if(_currentQuestionIndex > length-1)
-      completed = true;
+  }
+
+  void nextQuestion() async{
+    _currentQuestionCount++;
+    _showHint = false;
+    try{
+      if(_currentQuestionCount > _totalQuestions)
+        _state = QuizSessionState.completed;
+      else{
+        _state = QuizSessionState.loading;
+        notifyListeners();
+        _currentQuestion = await _questionRepository.fetch();
+        _state = QuizSessionState.showing;
+      }
+    }
+    catch(e){
+      print("caca "+e);
+    }
     notifyListeners();
   }
 
-  bool isCompleted(){
-    return completed;
-  }
-
-  bool hintRequested(){
+  void toggleHint(){
     _showHint = !_showHint;
     notifyListeners();
-    return _showHint;
   }
 
   bool checkAnswer(String answer) {
@@ -45,4 +55,11 @@ class QuizSession with ChangeNotifier {
     }
     return false;
   }
+
+  QuizSessionState get state => _state;
+  bool get showHint => _showHint;
+  int get score => _score;
+  Question get currentQuestion => _currentQuestion;
+  int get totalQuestions => _totalQuestions;
+
 }
