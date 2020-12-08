@@ -9,7 +9,7 @@ class WarriorQuizSession extends QuizSession {
 
   bool _answer=true;
   WarriorQuizSession({QuestionRepository questionRepository}): super(questionRepository: questionRepository, totalQuestions: 15){
-    startTimeout(30);
+    endGameTimeout(30);
   }
 
   bool checkAnswer(String answer) {
@@ -28,7 +28,7 @@ class WarriorQuizSession extends QuizSession {
       super.nextQuestion();
   }
 
-  startTimeout([int seconds = 10]) {
+  endGameTimeout([int seconds = 10]) {
     return Timer(Duration(seconds: seconds), endGame);
   }
 }
