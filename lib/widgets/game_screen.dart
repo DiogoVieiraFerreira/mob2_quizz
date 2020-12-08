@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quiz/models/Remote_question_repository.dart';
+import 'package:quiz/models/journeyman_quiz_session.dart';
 import 'package:quiz/models/local_question_repository.dart';
 
 import 'package:quiz/models/quiz_session.dart';
@@ -12,6 +13,7 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // QuizSession session = QuizSession(questionRepository: new LocalQuestionRepository(),totalQuestions: 4 );
     // QuizSession session = RookieQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
+    QuizSession session = JourneymanQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
     session.nextQuestion();
 
     return Scaffold(
