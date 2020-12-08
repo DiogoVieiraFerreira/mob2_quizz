@@ -7,13 +7,15 @@ import 'package:quiz/models/local_question_repository.dart';
 import 'package:quiz/models/quiz_session.dart';
 import 'package:quiz/models/question.dart';
 import 'package:quiz/models/rookie_quiz_session.dart';
+import 'package:quiz/models/warrior_quiz_session.dart';
 
 class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // QuizSession session = QuizSession(questionRepository: new LocalQuestionRepository(),totalQuestions: 4 );
     // QuizSession session = RookieQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
-    QuizSession session = JourneymanQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
+    // QuizSession session = JourneymanQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
+    QuizSession session = WarriorQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
     session.nextQuestion();
 
     return Scaffold(

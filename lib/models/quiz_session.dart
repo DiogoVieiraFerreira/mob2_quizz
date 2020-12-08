@@ -30,7 +30,7 @@ class QuizSession with ChangeNotifier {
     _showHint = false;
     try {
       if (_currentQuestionCount > _totalQuestions)
-        _state = QuizSessionState.completed;
+        return endGame();
       else {
         _state = QuizSessionState.loading;
         notifyListeners();
@@ -51,6 +51,11 @@ class QuizSession with ChangeNotifier {
 
   bool checkAnswer(String answer) {
     return currentQuestion.isCorrectAnswer(answer);
+  }
+
+  void endGame(){
+    _state=QuizSessionState.completed;
+    notifyListeners();
   }
   
   QuizSessionState get state => _state;
