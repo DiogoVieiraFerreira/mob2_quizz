@@ -5,12 +5,13 @@ import 'package:quiz/models/local_question_repository.dart';
 
 import 'package:quiz/models/quiz_session.dart';
 import 'package:quiz/models/question.dart';
+import 'package:quiz/models/rookie_quiz_session.dart';
 
 class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // QuizSession session = QuizSession(questionRepository: new LocalQuestionRepository(),totalQuestions: 4 );
-    QuizSession session = QuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"),totalQuestions: 4 );
+    // QuizSession session = RookieQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
     session.nextQuestion();
 
     return Scaffold(
@@ -27,9 +28,9 @@ class GameScreen extends StatelessWidget {
               case QuizSessionState.showing:
                 return buildQuestion(consumerContext, session);
               case QuizSessionState.completed:
-                default: //TODO create error page
                 return buildEndGame(context, session);
-                break;
+              default:
+                return buildErrorPage(context);
             }
           },
         ),
@@ -41,6 +42,14 @@ class GameScreen extends StatelessWidget {
     return Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         buildScore(context, session),
+        ElevatedButton(onPressed: () => Navigator.pushReplacementNamed(context, "/"), child: Text("restart"))
+      ]),
+    );
+  }
+  Widget buildErrorPage(BuildContext context) {
+    return Center(
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Text("An Error Occured... check your access Internet or retry later."),
         ElevatedButton(onPressed: () => Navigator.pushReplacementNamed(context, "/"), child: Text("restart"))
       ]),
     );
