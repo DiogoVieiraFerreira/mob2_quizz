@@ -21,6 +21,6 @@ class NinjaQuizSession extends WarriorQuizSession {
   }
   questionTimeout([int seconds = 3]) {
     if (timer != null) timer.cancel();
-    timer = Timer(Duration(seconds: seconds), super.nextQuestion);
+    timer = Timer(Duration(seconds: seconds), nextQuestion);
   }
 }

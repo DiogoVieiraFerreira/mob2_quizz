@@ -40,7 +40,7 @@ class GameScreen extends StatelessWidget {
     return Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         buildScore(context, session),
-        ElevatedButton(onPressed: () => Navigator.pushReplacementNamed(context, "/"), child: Text("restart"))
+        ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("restart"))
       ]),
     );
   }
@@ -48,7 +48,7 @@ class GameScreen extends StatelessWidget {
     return Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text("An Error Occured... check your access Internet or retry later."),
-        ElevatedButton(onPressed: () => Navigator.pushReplacementNamed(context, "/"), child: Text("restart"))
+        ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("restart"))
       ]),
     );
   }
