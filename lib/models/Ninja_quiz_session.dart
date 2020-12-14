@@ -24,13 +24,12 @@ class NinjaQuizSession extends QuizSession {
   }
 
   void nextQuestion() {
+    if(state == QuizSessionState.completed)
+      timer.cancel();
     if (_answer) {
       super.nextQuestion();
       questionTimeout();
     }
-
-    if(state == QuizSessionState.completed)
-      timer.cancel();
   }
 
   gameTimeout([int seconds = 10]) {

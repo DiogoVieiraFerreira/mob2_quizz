@@ -1,12 +1,25 @@
 import 'package:flutter/foundation.dart';
+import 'package:quiz/models/Ninja_quiz_session.dart';
+import 'package:quiz/models/journeyman_quiz_session.dart';
 import 'package:quiz/models/question.dart';
 import 'package:quiz/models/question_repository.dart';
+import 'package:quiz/models/rookie_quiz_session.dart';
+import 'package:quiz/models/warrior_quiz_session.dart';
+
+import 'Remote_question_repository.dart';
+import 'local_question_repository.dart';
 
 enum QuizSessionState {
   loading,
   showing,
   error,
   completed,
+}
+enum QuizSessionType {
+  rookie,
+  journeyman,
+  ninja,
+  warrior,
 }
 
 class QuizSession with ChangeNotifier {
@@ -57,9 +70,27 @@ class QuizSession with ChangeNotifier {
     _state=QuizSessionState.completed;
     notifyListeners();
   }
+
+
+  factory QuizSession.fromEnum(QuizSessionType type,[bool local = true]){
+    var questionRepository = local ? new LocalQuestionRepository() : new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next");
+    switch(type){
+      case QuizSessionType.rookie:
+        return RookieQuizSession(questionRepository: questionRepository);
+      case QuizSessionType.journeyman:
+        return JourneymanQuizSession(questionRepository: questionRepository);
+      case QuizSessionType.ninja:
+        return NinjaQuizSession(questionRepository: questionRepository);
+      case QuizSessionType.warrior:
+        return WarriorQuizSession(questionRepository: questionRepository);
+      default:
+        return QuizSession(questionRepository: questionRepository, totalQuestions: 10);
+    }
+  }
   
   QuizSessionState get state => _state;
   bool get showHint => _showHint;
   Question get currentQuestion => _currentQuestion;
   int get totalQuestions => _totalQuestions;
+  int get currentQuestionCount => _currentQuestionCount;
 }

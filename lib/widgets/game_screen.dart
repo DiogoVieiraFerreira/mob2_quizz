@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quiz/models/Ninja_quiz_session.dart';
-import 'package:quiz/models/Remote_question_repository.dart';
 
 import 'package:quiz/models/quiz_session.dart';
 
 class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // QuizSession session = QuizSession(questionRepository: new LocalQuestionRepository(),totalQuestions: 4 );
-    // QuizSession session = RookieQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
-    // QuizSession session = JourneymanQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
-    QuizSession session = NinjaQuizSession(questionRepository: new RemoteQuestionRepository("http://192.168.1.103:4567/questions/next"));
+    QuizSession session = QuizSession.fromEnum(QuizSessionType.rookie);
     session.nextQuestion();
 
     return Scaffold(
@@ -77,6 +72,7 @@ class GameScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          // Text("question "+ session.currentQuestionCount.toString(),  textScaleFactor: 1.0, textAlign: TextAlign.start),
           Text(session.currentQuestion.caption, textScaleFactor: 2.0),
           Visibility(
             child: Text("Hint: ${session.currentQuestion.hint}",
