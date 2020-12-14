@@ -6,12 +6,12 @@ import 'package:quiz/models/quiz_session.dart';
 class GameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    QuizSession session = QuizSession.fromEnum(QuizSessionType.rookie);
+    QuizSession session = QuizSession.fromEnum(QuizSessionType.warrior);
     session.nextQuestion();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quiz"),
+        title: Text("Quiz with ${session.totalQuestions} questions"),
       ),
       body: ChangeNotifierProvider.value(
         value: session,
@@ -56,6 +56,8 @@ class GameScreen extends StatelessWidget {
     );
   }
   Widget buildQuestion(BuildContext context, QuizSession session) {
+    // Text("question "+ session.currentQuestionCount.toString(),  textScaleFactor: 1.0, textAlign: TextAlign.left);
+
     var answerButtons = session.currentQuestion.answers.map((answer) {
       return ElevatedButton(
           onPressed: () {
