@@ -1,4 +1,3 @@
-import 'package:quiz/models/question.dart';
 import 'package:quiz/models/question_repository.dart';
 
 import 'quiz_session.dart';
@@ -10,8 +9,7 @@ class RookieQuizSession extends QuizSession {
     if(currentQuestion.isCorrectAnswer(answer))
     {
       score++;
-      return true;
     }
-    return false;
+    return true;
   }
 }

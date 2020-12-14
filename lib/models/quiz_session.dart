@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:quiz/models/Ninja_quiz_session.dart';
+import 'package:quiz/models/ninja_quiz_session.dart';
 import 'package:quiz/models/journeyman_quiz_session.dart';
 import 'package:quiz/models/question.dart';
 import 'package:quiz/models/question_repository.dart';
 import 'package:quiz/models/rookie_quiz_session.dart';
 import 'package:quiz/models/warrior_quiz_session.dart';
 
-import 'Remote_question_repository.dart';
+import 'remote_question_repository.dart';
 import 'local_question_repository.dart';
 
 enum QuizSessionState {

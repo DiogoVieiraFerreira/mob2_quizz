@@ -9,7 +9,6 @@ class GameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final  Map<String, QuizSessionType>routeParams = ModalRoute.of(context).settings.arguments;
-    print(routeParams["type"]);
     QuizSession session = QuizSession.fromEnum(routeParams["type"]);
     session.nextQuestion();
 
@@ -60,13 +59,12 @@ class GameScreen extends StatelessWidget {
     );
   }
   Widget buildQuestion(BuildContext context, QuizSession session) {
-    // Text("question "+ session.currentQuestionCount.toString(),  textScaleFactor: 1.0, textAlign: TextAlign.left);
 
     var answerButtons = session.currentQuestion.answers.map((answer) {
       return ElevatedButton(
           onPressed: () {
-            session.checkAnswer(answer);
-            session.nextQuestion();
+            if (session.checkAnswer(answer))
+              session.nextQuestion();
           },
           child: SizedBox(
               width: double.infinity,
