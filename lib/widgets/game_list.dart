@@ -8,16 +8,15 @@ class GameList extends StatelessWidget {
         appBar: AppBar(
           title: Text("Quiz List"),
         ),
-        body: ListQuiz(),
+        body: ListQuiz(context),
     );
   }
 
-  Widget ListQuiz() {
+  Widget ListQuiz(BuildContext context) {
     var quizzButtons = QuizSessionType.values.map((type) {
       return ElevatedButton(
           onPressed: () {
-            QuizSession session = QuizSession.fromEnum(type);
-            print(session);
+            Navigator.pushNamed(context,"/quiz", arguments: {"type": type});
           },
           child: Text(
               type?.toString()?.split('.')?.elementAt(1), textScaleFactor: 2.0,
@@ -25,11 +24,10 @@ class GameList extends StatelessWidget {
       );
     });
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+      child: ListView(
+        children: [
           ...quizzButtons,
-        ],
+        ]
       ),
     );
   }

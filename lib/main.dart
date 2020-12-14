@@ -12,7 +12,11 @@ class QuizApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: GameList(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => GameList(),
+        '/quiz': (context) => GameScreen(),
+      },
     );
   }
 }

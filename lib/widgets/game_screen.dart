@@ -4,9 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:quiz/models/quiz_session.dart';
 
 class GameScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    QuizSession session = QuizSession.fromEnum(QuizSessionType.warrior);
+
+    final  Map<String, QuizSessionType>routeParams = ModalRoute.of(context).settings.arguments;
+    print(routeParams["type"]);
+    QuizSession session = QuizSession.fromEnum(routeParams["type"]);
     session.nextQuestion();
 
     return Scaffold(
